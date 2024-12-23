@@ -31,22 +31,22 @@ function TeacherPanel() {
     setCurrentSession(e.target.value);
   };
 
-  // Добавление нового студента с шифром
   const addStudent = (studentName, studentCode, subjects) => {
+    const formattedSubjects = Object.fromEntries(
+      Object.entries(subjects).map(([key, value]) => [key, value || "Нет данных"])
+    );
     setGrades((prev) => {
       const sessionGrades = { ...prev[currentSession] };
-      sessionGrades[studentName] = { code: studentCode, subjects };
+      sessionGrades[studentName] = { code: studentCode, subjects: formattedSubjects };
       return { ...prev, [currentSession]: sessionGrades };
     });
   };
 
-  // Открытие модального окна для редактирования
   const openEditModal = (student, data) => {
     const { code, subjects } = data;
     setEditingData({ student, code, subjects });
   };
 
-  // Обновление оценок студента
   const updateGrade = (student, updatedSubjects) => {
     setGrades((prev) => {
       const sessionGrades = { ...prev[currentSession] };
@@ -56,14 +56,13 @@ function TeacherPanel() {
     setEditingData(null);
   };
 
-  // Удаление студента
   const deleteStudent = (studentName) => {
     setGrades((prev) => {
       const sessionGrades = { ...prev[currentSession] };
       delete sessionGrades[studentName];
       return { ...prev, [currentSession]: sessionGrades };
     });
-    setEditingData(null); // Закрываем модальное окно
+    setEditingData(null);
   };
 
   const closeAddModal = () => setAddModalVisible(false);
@@ -101,23 +100,17 @@ function TeacherPanel() {
               <tr
                 key={`${student}-${idx}`}
                 onClick={() => openEditModal(student, { code, subjects })}
-                style={{
-                  cursor: "pointer",
-                  transition: "background-color 0.3s",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#f0f8ff")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "")
-                }
+                style={{ cursor: "pointer", transition: "background-color 0.3s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0f8ff")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "")}
               >
                 <td>{student}</td>
                 <td>{code}</td>
                 <td>
                   {Object.entries(subjects).map(([subject, grade]) => (
                     <p key={subject}>
-                      <b>{subject}:</b> {grade}
+                      <b>{subject}:</b>{" "}
+                      {typeof grade === "object" ? JSON.stringify(grade) : grade}
                     </p>
                   ))}
                 </td>

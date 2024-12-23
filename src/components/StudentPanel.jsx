@@ -7,20 +7,13 @@ function StudentPanel() {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    const storedGrades = JSON.parse(localStorage.getItem('grades')) || {
-      "Сессия 1": {},
-      "Сессия 2": {},
-      "Сессия 3": {},
-      "Сессия 4": {},
-      "Сессия 5": {},
-      "Сессия 6": {},
-    };
+    const storedGrades = JSON.parse(localStorage.getItem('grades')) || {};
     setGrades(storedGrades);
   }, []);
 
   const calculateAverage = (studentName) => {
     const allGrades = Object.values(grades).flatMap((session) =>
-      Object.entries(session[studentName] || {}).map(([, grade]) => parseFloat(grade))
+      Object.values(session[studentName]?.subjects || {}).map((grade) => parseFloat(grade))
     );
 
     const total = allGrades.reduce((sum, grade) => sum + grade, 0);
@@ -30,8 +23,8 @@ function StudentPanel() {
   const openStudentCard = (studentName) => {
     setSelectedStudent({
       name: studentName,
-      group: "Группа A", // Здесь можно подключить реальные данные
-      code: "12345", // Это шифр студента (можно заменить реальными данными)
+      group: "Группа A",
+      code: "12345",
       average: calculateAverage(studentName),
     });
     setModalVisible(true);
@@ -58,26 +51,20 @@ function StudentPanel() {
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(grades[session]).map(([student, subjects]) => (
+                {Object.entries(grades[session]).map(([student, { subjects }]) => (
                   <tr
                     key={student}
-                    onClick={() => openStudentCard(student)} // Открытие модального окна при клике на строку
-                    style={{
-                      cursor: "pointer",
-                      transition: "background-color 0.3s",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.backgroundColor = "#f0f8ff") // Цвет при наведении
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.backgroundColor = "") // Убрать цвет при уходе
-                    }
+                    onClick={() => openStudentCard(student)}
+                    style={{ cursor: "pointer", transition: "background-color 0.3s" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0f8ff")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "")}
                   >
                     <td>{student}</td>
                     <td>
                       {Object.entries(subjects).map(([subject, grade]) => (
                         <div key={subject}>
-                          <b>{subject}:</b> {grade}
+                          <b>{subject}:</b>{" "}
+                          {typeof grade === "object" ? JSON.stringify(grade) : grade}
                         </div>
                       ))}
                     </td>

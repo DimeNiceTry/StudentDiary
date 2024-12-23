@@ -3,6 +3,8 @@ import React from 'react';
 function StudentCardModal({ student, onClose }) {
   if (!student) return null;
 
+  const { name, group, code, average } = student;
+  
   return (
     <>
       <div
@@ -21,16 +23,16 @@ function StudentCardModal({ student, onClose }) {
       >
         <h4>Карточка студента</h4>
         <p>
-          <strong>ФИО:</strong> {student.name}
+          <strong>ФИО:</strong> {typeof name === 'string' ? name : "Нет данных"}
         </p>
         <p>
-          <strong>Группа:</strong> {student.group}
+          <strong>Группа:</strong> {typeof group === 'string' ? group : "Нет данных"}
         </p>
         <p>
-          <strong>Шифр:</strong> {student.code}
+          <strong>Шифр:</strong> {typeof code === 'string' ? code : "Нет данных"}
         </p>
         <p>
-          <strong>Средний балл:</strong> {student.average}
+          <strong>Средний балл:</strong> {typeof average === 'number' ? average : "Нет данных"}
         </p>
         <button onClick={onClose} style={{ marginTop: "10px" }}>
           Закрыть

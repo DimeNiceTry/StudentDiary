@@ -65,6 +65,25 @@ function TeacherPanel() {
     setEditingData(null);
   };
 
+  const resetGrades = () => {
+    setGrades((prev) => {
+      const resetSessionGrades = Object.fromEntries(
+        Object.entries(prev).map(([session, students]) => [
+          session,
+          Object.fromEntries(
+            Object.entries(students).map(([student, data]) => [
+              student,
+              { ...data, subjects: Object.fromEntries(
+                Object.keys(data.subjects).map((subject) => [subject, "Нет данных"])
+              ) }
+            ])
+          )
+        ])
+      );
+      return resetSessionGrades;
+    });
+  };
+
   const closeAddModal = () => setAddModalVisible(false);
 
   const gradesForSession = grades[currentSession] || {};
@@ -85,6 +104,9 @@ function TeacherPanel() {
         </label>
       </div>
       <button onClick={() => setAddModalVisible(true)}>Добавить студента</button>
+      <button onClick={resetGrades} style={{ marginLeft: "10px", backgroundColor: "#ff4d4d", color: "white", border: "none", padding: "5px 10px", cursor: "pointer" }}>
+        Сбросить все оценки
+      </button>
       <h4>Оценки для {currentSession}:</h4>
       <table border="1" cellPadding="5" style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>

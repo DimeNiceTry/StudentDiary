@@ -1,13 +1,12 @@
 {
   "files": {
-    "main.css": "/StudentDiary/static/css/main.e6c13ad2.css",
-    "main.js": "/StudentDiary/static/js/main.b10b8c38.js",
+    "main.css": "/StudentDiary/static/css/main.31d6cfe0.css",
+    "main.js": "/StudentDiary/static/js/main.a53c5ffb.js",
     "index.html": "/StudentDiary/index.html",
-    "main.e6c13ad2.css.map": "/StudentDiary/static/css/main.e6c13ad2.css.map",
-    "main.b10b8c38.js.map": "/StudentDiary/static/js/main.b10b8c38.js.map"
+    "main.a53c5ffb.js.map": "/StudentDiary/static/js/main.a53c5ffb.js.map"
   },
   "entrypoints": [
-    "static/css/main.e6c13ad2.css",
-    "static/js/main.b10b8c38.js"
+    "static/css/main.31d6cfe0.css",
+    "static/js/main.a53c5ffb.js"
   ]
 }
